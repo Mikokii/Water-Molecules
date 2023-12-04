@@ -3,10 +3,13 @@
 #include <thread>
 #include <chrono>
 #include <atomic>
+#include <conio.h>
 #include "Oxygen.hpp"
 #include "Hydrogen.hpp"
 
+void handleInput(int* inputOxygenProducers, int* inputHydrogenProducers);
 void printInfo(int &numberWater, int inputOxygenProducers, int inputHydrogenProducers, std::vector<OxygenProducer> &oxygenProducersVector, std::vector<HydrogenProducer> &hydrogenProducersVector);
+void handleExit(int &numberWater);
 
 int main(){
     int inputOxygenProducers, inputHydrogenProducers;
@@ -17,16 +20,8 @@ int main(){
     std::vector<OxygenProducer*> oxygenQueue;
     std::vector<HydrogenProducer*> hydrogenQueue;
     std::vector<std::thread> oxygenThreads, hydrogenThreads;
-    while (true){
-        std::cout << "Number of Oxygen Producers: ";
-        std::cin >> inputOxygenProducers;
-        std::cout << "Number of Hydrogen Producers: ";
-        std::cin >> inputHydrogenProducers;
-        if (inputOxygenProducers >= 1 && inputHydrogenProducers >= 2){
-            break;
-        }
-        std::cout << "Wrong input. Try again." << std::endl;
-    }
+
+    handleInput(&inputOxygenProducers, &inputHydrogenProducers);
 
     for (int i = 0; i < inputOxygenProducers; i++){
         oxygenProducersVector.push_back(OxygenProducer());
@@ -49,6 +44,7 @@ int main(){
     }
 
     std::thread printThread(printInfo, std::ref(numberWater), inputOxygenProducers, inputHydrogenProducers, std::ref(oxygenProducersVector), std::ref(hydrogenProducersVector));
+    std::thread exitThread(handleExit, std::ref(numberWater));
 
     while (true){
         if (numberHydrogen >= 2 && numberOxygen >= 1){
@@ -73,12 +69,24 @@ int main(){
         hydrogenThreads[i].join();
     }
     printThread.join();
-
-    std::cout << "Hydrogen: " << numberHydrogen << " Oxygen: " << numberOxygen << std::endl;
+    exitThread.join();
 
     return 0;
 }
 
+void handleInput(int* inputOxygenProducers, int* inputHydrogenProducers){
+    while (true){
+        std::cout << "You can type \"e\" or \"esc\" at any point to end program." << std::endl;
+        std::cout << "Number of Oxygen Producers: ";
+        std::cin >> *inputOxygenProducers;
+        std::cout << "Number of Hydrogen Producers: ";
+        std::cin >> *inputHydrogenProducers;
+        if (*inputOxygenProducers >= 1 && *inputHydrogenProducers >= 2){
+            break;
+        }
+        std::cout << "Wrong input. Try again." << std::endl;
+    }
+}
 void printInfo(int &numberWater, int inputOxygenProducers, int inputHydrogenProducers, std::vector<OxygenProducer> &oxygenProducersVector, std::vector<HydrogenProducer> &hydrogenProducersVector){
     while (true){
         std::cout << "------------------------------------------------------------------------------------" << std::endl;
@@ -106,3 +114,14 @@ void printInfo(int &numberWater, int inputOxygenProducers, int inputHydrogenProd
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
 }
+void handleExit(int &numberWater){
+    char input;
+    const int ESC = 27;
+    while(true){
+        input = _getch();
+        if (input == 'e' || input == 'E' || input == ESC){
+            std::cout << "\n\nTotal water molecules produced: " << numberWater << std::endl;
+            exit(0);
+        }
+    }
+};

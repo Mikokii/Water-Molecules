@@ -4,6 +4,7 @@
 #include <random>
 #include <thread>
 #include <vector>
+#include <atomic>
 
 class HydrogenProducer{
 private:
@@ -13,5 +14,5 @@ public:
     ~HydrogenProducer();
     bool hasHydrogen();
     void resetHydrogen();
-    void produceHydrogen(int *n, std::vector<HydrogenProducer*>& queue);
+    void produceHydrogen(std::atomic<int> *n, std::vector<HydrogenProducer*>& queue);
 };

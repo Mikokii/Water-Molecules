@@ -4,6 +4,7 @@
 #include <random>
 #include <thread>
 #include <vector>
+#include <atomic>
 
 class OxygenProducer{
 private:
@@ -13,5 +14,5 @@ public:
     ~OxygenProducer();
     bool hasOxygen();
     void resetOxygen();
-    void produceOxygen(int *n, std::vector<OxygenProducer*>& queue);
+    void produceOxygen(std::atomic<int> *n, std::vector<OxygenProducer*>& queue);
 };

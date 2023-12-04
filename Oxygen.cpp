@@ -6,7 +6,7 @@ OxygenProducer::OxygenProducer(){
 
 OxygenProducer::~OxygenProducer(){}
 
-void OxygenProducer::produceOxygen(int *n, std::vector<OxygenProducer*>& queue){
+void OxygenProducer::produceOxygen(std::atomic<int> *n, std::vector<OxygenProducer*>& queue){
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::mt19937 g(seed);
     std::uniform_int_distribution<int> rng(0, 10000);
@@ -14,7 +14,7 @@ void OxygenProducer::produceOxygen(int *n, std::vector<OxygenProducer*>& queue){
         if (!oxygen){
         std::this_thread::sleep_for(std::chrono::milliseconds(rng(g)));
         oxygen = true;
-        (*n)++;
+        (*n)+=1;
         std::cout << "O produced" << std::endl;
         queue.push_back(this);
         }   

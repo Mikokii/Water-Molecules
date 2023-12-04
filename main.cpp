@@ -2,6 +2,7 @@
 #include <vector>
 #include <thread>
 #include <chrono>
+#include <atomic>
 #include "Oxygen.hpp"
 #include "Hydrogen.hpp"
 
@@ -9,7 +10,8 @@ void printInfo(int &numberWater, int inputOxygenProducers, int inputHydrogenProd
 
 int main(){
     int inputOxygenProducers, inputHydrogenProducers;
-    int numberOxygen = 0, numberHydrogen = 0, numberWater = 0;
+    std::atomic<int> numberOxygen = 0, numberHydrogen = 0;
+    int numberWater = 0;
     std::vector<OxygenProducer> oxygenProducersVector;
     std::vector<HydrogenProducer> hydrogenProducersVector;
     std::vector<OxygenProducer*> oxygenQueue;

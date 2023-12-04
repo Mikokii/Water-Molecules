@@ -89,6 +89,7 @@ void handleInput(int* inputOxygenProducers, int* inputHydrogenProducers){
 }
 void printInfo(int &numberWater, int inputOxygenProducers, int inputHydrogenProducers, std::vector<OxygenProducer> &oxygenProducersVector, std::vector<HydrogenProducer> &hydrogenProducersVector){
     while (true){
+        system("cls");
         std::cout << "------------------------------------------------------------------------------------" << std::endl;
         std::cout << "Number of water molecules: " << numberWater << std::endl;
         std::cout << "O: ";
@@ -110,6 +111,8 @@ void printInfo(int &numberWater, int inputOxygenProducers, int inputHydrogenProd
                 std::cout << "- ";
             }
         }
+        std::cout << std::endl;
+        std::cout << "------------------------------------------------------------------------------------" << std::endl;
         std::cout << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }

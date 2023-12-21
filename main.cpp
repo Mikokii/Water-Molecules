@@ -6,6 +6,12 @@
 #include <conio.h>
 #include "Oxygen.hpp"
 #include "Hydrogen.hpp"
+#ifdef _WIN32
+    # define PLATFORM "windows"
+    #include <conio.h>
+#else
+	# define PLATFORM "linux"
+#endif
 
 void handleInput(int* inputOxygenProducers, int* inputHydrogenProducers);
 void printInfo(int &numberWater, int inputOxygenProducers, int inputHydrogenProducers, std::vector<OxygenProducer> &oxygenProducersVector, std::vector<HydrogenProducer> &hydrogenProducersVector);
@@ -77,7 +83,12 @@ int main(){
 
 void handleInput(int* inputOxygenProducers, int* inputHydrogenProducers){
     while (true){
-        std::cout << "You can type \"e\" or \"esc\" at any point to end program." << std::endl;
+        if (PLATFORM == "windows"){
+            std::cout << "You can type \"e\" or \"esc\" at any point to end program." << std::endl;
+        }
+        else{
+            std::cout << "You can type press \"ENTER\" at any point to end program." << std::endl;
+        }
         std::cout << "Number of Oxygen Producers: ";
         std::cin >> *inputOxygenProducers;
         std::cout << "Number of Hydrogen Producers: ";
@@ -121,11 +132,21 @@ void printInfo(int &numberWater, int inputOxygenProducers, int inputHydrogenProd
 void handleExit(int &numberWater){
     char input;
     const int ESC = 27;
+    const int ENTER = 13;
     while(true){
-        input = _getch();
-        if (input == 'e' || input == 'E' || input == ESC){
-            std::cout << "\n\nTotal water molecules produced: " << numberWater << std::endl;
-            exit(0);
+        if (PLATFORM == "windows"){
+            input = _getch();
+            if (input == 'e' || input == 'E' || input == ESC){
+                std::cout << "\n\nTotal water molecules produced: " << numberWater << std::endl;
+                exit(0);
+        }
+        }
+        else{
+            input = getchar();
+            if (input == ENTER){
+                std::cout << "\n\nTotal water molecules produced: " << numberWater << std::endl;
+                exit(0);
+            }
         }
     }
 };

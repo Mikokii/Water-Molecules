@@ -3,14 +3,17 @@
 #include <thread>
 #include <chrono>
 #include <atomic>
-#include <conio.h>
 #include "Oxygen.hpp"
 #include "Hydrogen.hpp"
+
 #ifdef _WIN32
     # define PLATFORM "windows"
     #include <conio.h>
 #else
 	# define PLATFORM "linux"
+    int _getch() {
+        return std::getline(std::cin, tekst);
+    }
 #endif
 
 void handleInput(int* inputOxygenProducers, int* inputHydrogenProducers);
@@ -87,7 +90,7 @@ void handleInput(int* inputOxygenProducers, int* inputHydrogenProducers){
             std::cout << "You can type \"e\" or \"esc\" at any point to end program." << std::endl;
         }
         else{
-            std::cout << "You can type press \"ENTER\" at any point to end program." << std::endl;
+            std::cout << "You can press \"ENTER\" at any point to end program." << std::endl;
         }
         std::cout << "Number of Oxygen Producers: ";
         std::cin >> *inputOxygenProducers;
@@ -130,11 +133,10 @@ void printInfo(int &numberWater, int inputOxygenProducers, int inputHydrogenProd
     }
 }
 void handleExit(int &numberWater){
-    char input;
     const int ESC = 27;
-    const int ENTER = 13;
     while(true){
         if (PLATFORM == "windows"){
+            char input;
             input = _getch();
             if (input == 'e' || input == 'E' || input == ESC){
                 std::cout << "\n\nTotal water molecules produced: " << numberWater << std::endl;
@@ -142,8 +144,9 @@ void handleExit(int &numberWater){
         }
         }
         else{
-            input = getchar();
-            if (input == ENTER){
+            std::string input;
+            input = _getch();
+            if (input.empty()){
                 std::cout << "\n\nTotal water molecules produced: " << numberWater << std::endl;
                 exit(0);
             }

@@ -10,6 +10,7 @@
 void handleInput(int* inputOxygenProducers, int* inputHydrogenProducers);
 void printInfo(int &numberWater, int inputOxygenProducers, int inputHydrogenProducers, std::vector<OxygenProducer> &oxygenProducersVector, std::vector<HydrogenProducer> &hydrogenProducersVector);
 void handleExit(int &numberWater);
+void clearScreen();
 
 int main(){
     int inputOxygenProducers, inputHydrogenProducers;
@@ -89,7 +90,7 @@ void handleInput(int* inputOxygenProducers, int* inputHydrogenProducers){
 }
 void printInfo(int &numberWater, int inputOxygenProducers, int inputHydrogenProducers, std::vector<OxygenProducer> &oxygenProducersVector, std::vector<HydrogenProducer> &hydrogenProducersVector){
     while (true){
-        system("cls");
+        clearScreen();
         std::cout << "------------------------------------------------------------------------------------" << std::endl;
         std::cout << "Number of water molecules: " << numberWater << std::endl;
         std::cout << "O: ";
@@ -128,3 +129,7 @@ void handleExit(int &numberWater){
         }
     }
 };
+
+void clearScreen(){
+    printf("\033[2J\033[H");
+}
